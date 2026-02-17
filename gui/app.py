@@ -31,7 +31,7 @@ from gui.sidebar       import Sidebar
 from gui.animations    import Animator
 from gui.sound_manager import SoundManager
 
-from algorithms import bfs, dfs, ucs
+from algorithms import bfs, dfs, ucs, Astar
 
 
 class AIVisualizer(ctk.CTk):
@@ -40,7 +40,7 @@ class AIVisualizer(ctk.CTk):
     Responsibilities:
         1. Window setup (title, icon, fullscreen, dark theme).
         2. Layout construction (sidebar, header, canvas, status bar).
-        3. Algorithm dispatch (BFS / DFS / UCS).
+        3. Algorithm dispatch (BFS / DFS / UCS / A*).
         4. Animation chain orchestration (explore → path → truck → extinguish).
         5. Sound effect coordination (fire crackling, siren, extinguisher).
     """
@@ -391,7 +391,8 @@ class AIVisualizer(ctk.CTk):
         elif algo == "UCS":
             self.run_ucs()
         elif algo in ("A* (Manhattan)", "A* (Euclidean)"):
-            self.show_toast(f"🚧 {algo} coming soon!", 2500)
+            # Pass True for Euclidean heuristic, False for Manhattan
+            self.run_astar(is_euclidean=(algo == "A* (Euclidean)"))
 
     # ═══════════════════════════════════════════════════════════
     #  UI STATE CONTROL
@@ -509,6 +510,52 @@ class AIVisualizer(ctk.CTk):
         self.animator.start_fire_cycle()
         self.animator.animate_exploration(
             visited_history, final_path, "UCS", self._on_exploration_done
+        )
+
+    def run_astar(self, is_euclidean=False):
+        """Run A* Search and animate the result (uses weighted grid).
+
+        A* uses the same weighted-grid format as UCS but with uniform
+        weights (all 1).  The *is_euclidean* flag selects between
+        Manhattan and Euclidean heuristics — passed straight through
+        to the Astar algorithm.
+
+        Args:
+            is_euclidean: If True, use Euclidean distance heuristic;
+                          if False (default), use Manhattan distance.
+        """
+        if not self._validate_start_goal():
+            return
+
+        self.clear_path()
+
+        # A* expects the same dict grid as UCS ({"blocked": bool, "weight": int})
+        weighted_grid = self.grid_canvas.build_weighted_grid()
+        result = Astar(
+            weighted_grid,
+            self.grid_canvas.start_pos,
+            self.grid_canvas.goal_pos,
+            is_euclidean
+        )
+
+        if result is False:
+            self.show_toast("❌ No path found to the fire!", 3000, error=True)
+            return
+
+        visited_history, final_path = result
+
+        # A* uses uniform weights (all 1), so total cost equals path length
+        total_cost = len(final_path)
+
+        algo_label = "A* (Euclidean)" if is_euclidean else "A* (Manhattan)"
+        self.sidebar.update_results(
+            cells_explored=len(visited_history),
+            total_cost=total_cost
+        )
+        self.disable_controls()
+        self.animator.start_fire_cycle()
+        self.animator.animate_exploration(
+            visited_history, final_path, algo_label, self._on_exploration_done
         )
 
     # ═══════════════════════════════════════════════════════════
