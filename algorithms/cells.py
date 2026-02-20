@@ -1,5 +1,5 @@
 """
-cells.py — Grid cell representations used by the pathfinding algorithms.
+cells.py -- Grid cell representations used by the pathfinding algorithms.
 
 Contains:
     - cell          (unweighted cell for BFS / DFS)
@@ -7,9 +7,9 @@ Contains:
 """
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  cell — Unweighted grid cell used by BFS and DFS
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+#  cell -- Unweighted grid cell used by BFS and DFS
+# ===============================================================================
 
 class cell:
     def __init__ (self):
@@ -23,9 +23,9 @@ class cell:
         self.parent_r, self.parent_c = coordinates
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  WightedCell — Weighted grid cell used by UCS
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+#  WightedCell -- Weighted grid cell used by UCS
+# ===============================================================================
 
 class WightedCell:
     def __init__(self):
@@ -43,9 +43,9 @@ class WightedCell:
     def setParent(self,coordinates):
         self.parent_r, self.parent_c = coordinates
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  WightedCell — Weighted grid cell used by A*
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+#  WightedCell -- Weighted grid cell used by A*
+# ===============================================================================
 
 class UniformWeightedCell:
     def __init__(self):

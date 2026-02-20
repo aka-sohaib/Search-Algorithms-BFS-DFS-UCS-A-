@@ -1,19 +1,20 @@
 """
-algorithms.py — Pathfinding algorithms for the Fire Brigade Visualizer.
+algorithms.py -- Pathfinding algorithms for the Fire Brigade Visualizer.
 
 Contains:
     - BFS  (Breadth-First Search)
     - DFS  (Depth-First Search)
     - UCS  (Uniform-Cost Search)
+    - A*   (Manhatten & Euclidean)
 """
 import math
 from algorithms.cells import cell, WightedCell, UniformWeightedCell
 from data_structures.data_structures import queue, stack, MinHeap
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  BFS — Breadth-First Search
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+#  BFS -- Breadth-First Search
+# ===============================================================================
 
 def bfs(logic_grid, start_pos, goal_pos):
     rows = len(logic_grid)
@@ -98,9 +99,9 @@ def bfs(logic_grid, start_pos, goal_pos):
     return final_history, final_path
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  DFS — Depth-First Search
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+#  DFS -- Depth-First Search
+# ===============================================================================
 
 def dfs(logic_grid, start_pos, goal_pos):
     rows = len(logic_grid)
@@ -186,9 +187,9 @@ def dfs(logic_grid, start_pos, goal_pos):
     return final_history, final_path
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  UCS — Uniform-Cost Search
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+#  UCS -- Uniform-Cost Search
+# ===============================================================================
 
 def ucs(logic_grid, start_pos, goal_pos):
     rows = len(logic_grid)
@@ -283,9 +284,9 @@ def ucs(logic_grid, start_pos, goal_pos):
     
     return final_history, final_path
 
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 #  A* Manhatten OR Euclediedean
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
 
 #Manhattan distance
 def get_h_manhattan(r, c, goalpos):

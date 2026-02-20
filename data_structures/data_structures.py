@@ -1,16 +1,16 @@
 """
-data_structures.py — Custom data structures used by the pathfinding algorithms.
+data_structures.py -- Custom data structures used by the pathfinding algorithms.
 
 Contains:
-    - Stack    (LIFO — used by DFS)
-    - Queue    (FIFO — used by BFS)
-    - MinHeap  (Priority Queue — used by UCS)
+    - Stack    (LIFO -- used by DFS)
+    - Queue    (FIFO -- used by BFS)
+    - MinHeap  (Priority Queue -- used by UCS & A*)
 """
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  Stack — Last In, First Out (LIFO) — used by DFS
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+#  Stack -- Last In, First Out (LIFO) -- used by DFS
+# ===============================================================================
 
 class stack:
     def __init__(self, size):
@@ -32,9 +32,9 @@ class stack:
             return False
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  Queue — First In, First Out (FIFO) — used by BFS
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+#  Queue -- First In, First Out (FIFO) -- used by BFS
+# ===============================================================================
 
 class queue:
     def __init__(self, size):
@@ -57,15 +57,15 @@ class queue:
             return False
 
 
-# ═══════════════════════════════════════════════════════════════════════════════
-#  MinHeap (Priority Queue) — used by UCS
-# ═══════════════════════════════════════════════════════════════════════════════
+# ===============================================================================
+#  MinHeap (Priority Queue) -- used by UCS & A*
+# ===============================================================================
 
 class MinHeap:
     def __init__(self, size, cols, rows):
         self.heap = [None]*size
         self.pos = [-1]*size
-        self.cost = [float('inf')]*size
+        self.cost = [(float('inf'), float('inf'))]*size
 
         self.size = 0
 

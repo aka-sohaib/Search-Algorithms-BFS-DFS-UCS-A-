@@ -6,7 +6,7 @@ Provides all user-facing controls for the Fire Brigade Pathfinding Visualizer:
     • Place Mode  – segmented button (Start / Goal / Wall / Road [UCS only])
     • Algorithm   – dropdown menu (BFS, DFS, UCS, A*)
     • Actions     – Run, Clear, Reset buttons
-    • Results     – live stat display (Steps, Cost, Explored)
+    • Results     – live stat display (Path Length, Cost, Explored)
     • Mute Toggle – sound on/off with speaker icon
 
 Design uses a card-style layout in a navy-purple dark theme with modern
@@ -322,9 +322,9 @@ class Sidebar:
         stats = ctk.CTkFrame(card, fg_color="transparent")
         stats.pack(fill="x", padx=10, pady=(0, 8))
 
-        self.path_cost_label     = self._stat_row(stats, "Steps",    "—")
-        self.total_cost_label    = self._stat_row(stats, "Cost",     "—")
-        self.visited_count_label = self._stat_row(stats, "Explored", "—")
+        self.path_length_label   = self._stat_row(stats, "Path Length", "—")
+        self.total_cost_label    = self._stat_row(stats, "Cost",        "—")
+        self.visited_count_label = self._stat_row(stats, "Explored",    "—")
 
     def _stat_row(self, parent, label, default):
         """Create a single stat row: label on the left, value on the right.
@@ -404,23 +404,24 @@ class Sidebar:
         elif "Pothole"  in val: return "RoadPothole"
         return "RoadPlain1"
 
-    def update_results(self, path_steps=None, total_cost=None, cells_explored=None):
+    def update_results(self, path_length=None, total_cost=None, cells_explored=None):
         """Update the result stat labels with algorithm output.
 
         Any argument left as None will show '—' (dash).
         """
-        if path_steps is not None:
-            self.path_cost_label.configure(text=str(path_steps))
-        if total_cost is not None:
-            self.total_cost_label.configure(text=str(total_cost))
-        else:
-            self.total_cost_label.configure(text="—")
-        if cells_explored is not None:
-            self.visited_count_label.configure(text=str(cells_explored))
+        self.path_length_label.configure(
+            text=str(path_length) if path_length is not None else "—"
+        )
+        self.total_cost_label.configure(
+            text=str(total_cost) if total_cost is not None else "—"
+        )
+        self.visited_count_label.configure(
+            text=str(cells_explored) if cells_explored is not None else "—"
+        )
 
     def clear_results(self):
         """Reset all result labels to the default dash ('—')."""
-        self.path_cost_label.configure(text="—")
+        self.path_length_label.configure(text="—")
         self.total_cost_label.configure(text="—")
         self.visited_count_label.configure(text="—")
 

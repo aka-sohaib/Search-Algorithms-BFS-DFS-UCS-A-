@@ -445,7 +445,11 @@ class AIVisualizer(ctk.CTk):
             return
 
         visited_history, final_path = result
-        self.sidebar.update_results(cells_explored=len(visited_history))
+        self.sidebar.update_results(
+            path_length=len(final_path),
+            total_cost=len(final_path),
+            cells_explored=len(visited_history)
+        )
         self.disable_controls()
         self.animator.start_fire_cycle()
         self.animator.animate_exploration(
@@ -469,7 +473,11 @@ class AIVisualizer(ctk.CTk):
             return
 
         visited_history, final_path = result
-        self.sidebar.update_results(cells_explored=len(visited_history))
+        self.sidebar.update_results(
+            path_length=len(final_path),
+            total_cost=len(final_path),
+            cells_explored=len(visited_history)
+        )
         self.disable_controls()
         self.animator.start_fire_cycle()
         self.animator.animate_exploration(
@@ -503,8 +511,9 @@ class AIVisualizer(ctk.CTk):
                 total_cost += ROAD_TYPES[road_name][1]
 
         self.sidebar.update_results(
-            cells_explored=len(visited_history),
-            total_cost=total_cost
+            path_length=len(final_path),
+            total_cost=total_cost,
+            cells_explored=len(visited_history)
         )
         self.disable_controls()
         self.animator.start_fire_cycle()
@@ -549,8 +558,9 @@ class AIVisualizer(ctk.CTk):
 
         algo_label = "A* (Euclidean)" if is_euclidean else "A* (Manhattan)"
         self.sidebar.update_results(
-            cells_explored=len(visited_history),
-            total_cost=total_cost
+            path_length=len(final_path),
+            total_cost=total_cost,
+            cells_explored=len(visited_history)
         )
         self.disable_controls()
         self.animator.start_fire_cycle()
@@ -568,8 +578,7 @@ class AIVisualizer(ctk.CTk):
         self.animator.animate_path(final_path, algo, self._on_path_done)
 
     def _on_path_done(self, final_path, algo):
-        """Phase 3: path drawn → show stats, start siren, move the truck."""
-        self.sidebar.update_results(path_steps=len(final_path))
+        """Phase 3: path drawn → start siren, move the truck."""
         self.sfx.start_siren()
         self.animator.animate_truck(final_path, self._on_truck_done)
 
